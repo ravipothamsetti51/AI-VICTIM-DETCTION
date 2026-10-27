@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import client from '../api/client';
+import client, { getImageUrl } from '../api/client';
 import {
   ScanEye,
   UploadCloud,
@@ -55,11 +55,6 @@ const Detections = ({ onOpenUpload }) => {
     }
   };
 
-  const getImageUrl = (url) => {
-    if (!url) return '';
-    if (url.startsWith('data:') || url.startsWith('http')) return url;
-    return `http://localhost:5000${url}`;
-  };
 
   return (
     <div className="space-y-6 font-mono">

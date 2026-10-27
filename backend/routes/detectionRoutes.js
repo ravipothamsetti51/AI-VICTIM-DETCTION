@@ -11,7 +11,7 @@ const Alert = require('../models/Alert');
 const Drone = require('../models/Drone');
 const Mission = require('../models/Mission');
 
-const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+const AI_SERVICE_URL = (process.env.AI_SERVICE_URL || 'https://ai-victim-detction-1.onrender.com').replace(/\/+$/, '');
 
 // POST /api/detections/upload (Multer -> AI Service -> MongoDB -> Alert)
 router.post('/upload', protect, upload.single('image'), async (req, res, next) => {

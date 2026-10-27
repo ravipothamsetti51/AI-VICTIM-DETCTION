@@ -8,7 +8,7 @@ import {
   useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
-import client from '../api/client';
+import client, { getImageUrl } from '../api/client';
 import {
   MapPin,
   Radio,
@@ -366,11 +366,7 @@ const LiveMap = () => {
                       {detection.processedImageUrl && (
                         <div className="border border-slate-700 rounded overflow-hidden">
                           <img
-                            src={
-                              detection.processedImageUrl.startsWith('data:')
-                                ? detection.processedImageUrl
-                                : `http://localhost:5000${detection.processedImageUrl}`
-                            }
+                            src={getImageUrl(detection.processedImageUrl)}
                             alt="Recon"
                             className="h-28 w-full object-cover"
                           />

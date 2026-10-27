@@ -1,6 +1,25 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Backend base URL (e.g., http://localhost:5000 or production domain)
+export const BACKEND_URL = (
+  import.meta.env.VITE_BACKEND_URL ||
+  (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '') : 'https://ai-victim-detction.onrender.com')
+).replace(/\/+$/, '');
+
+// Full API endpoint base (e.g., http://localhost:5000/api)
+export const API_BASE_URL = (import.meta.env.VITE_API_URL || `${BACKEND_URL}/api`).replace(/\/+$/, '');
+
+/**
+ * Resolves full URL for uploaded images/media returned from backend
+ */
+export const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://') || url.startsWith('blob:')) {
+    return url;
+  }
+  const cleanPath = url.startsWith('/') ? url : `/${url}`;
+  return `${BACKEND_URL}${cleanPath}`;
+};
 
 const client = axios.create({
   baseURL: API_BASE_URL,

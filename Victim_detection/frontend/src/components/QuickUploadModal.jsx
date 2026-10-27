@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import client from '../api/client';
+import client, { getImageUrl } from '../api/client';
 import {
   UploadCloud,
   X,
@@ -336,11 +336,7 @@ const QuickUploadModal = ({ isOpen, onClose, onUploadSuccess }) => {
               {/* Annotated Image */}
               <div className="relative border border-slate-700 rounded overflow-hidden bg-black text-center">
                 <img
-                  src={
-                    result.data.processedImageUrl?.startsWith('data:')
-                      ? result.data.processedImageUrl
-                      : `http://localhost:5000${result.data.processedImageUrl}`
-                  }
+                  src={getImageUrl(result.data.processedImageUrl)}
                   alt="AI Annotated"
                   className="max-h-72 mx-auto object-contain"
                 />

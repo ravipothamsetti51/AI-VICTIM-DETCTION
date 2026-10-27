@@ -28,7 +28,7 @@ import {
 import { MapContainer, TileLayer, Marker, Popup, Circle, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-const AI_API_URL = 'http://localhost:8000';
+const AI_API_URL = (import.meta.env.VITE_AI_URL || 'https://ai-victim-detction-1.onrender.com').replace(/\/+$/, '');
 
 // Custom Marker for Rescue Location (Green & Red pin)
 const rescueIcon = L.divIcon({

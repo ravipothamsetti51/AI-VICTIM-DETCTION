@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const mongoose = require('mongoose');
 
-const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+const AI_SERVICE_URL = (process.env.AI_SERVICE_URL || 'https://ai-victim-detction-1.onrender.com').replace(/\/+$/, '');
 
 router.get('/health', async (req, res) => {
   let aiHealth = { status: 'offline', error: null };

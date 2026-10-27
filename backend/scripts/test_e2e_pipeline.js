@@ -3,6 +3,8 @@ const path = require('path');
 const axios = require('axios');
 const FormData = require('form-data');
 
+const API_BASE = (process.env.API_BASE_URL || 'https://ai-victim-detction.onrender.com/api').replace(/\/+$/, '');
+
 async function testPipeline() {
   console.log('==================================================');
   console.log('  TESTING FULL END-TO-END PIPELINE (NO DOCKER)   ');
@@ -10,7 +12,7 @@ async function testPipeline() {
 
   // Step 1: Login as Operator
   console.log('\n[*] 1. Authenticating as Operator (operator@aerosentry.io)...');
-  const loginRes = await axios.post('http://localhost:5000/api/auth/login', {
+  const loginRes = await axios.post(`${API_BASE}/auth/login`, {
     email: 'operator@aerosentry.io',
     password: 'Operator@123'
   });
@@ -27,7 +29,7 @@ async function testPipeline() {
   form.append('lng', '85.32654');
   form.append('confidence_threshold', '0.2');
 
-  const uploadRes = await axios.post('http://localhost:5000/api/detections/upload', form, {
+  const uploadRes = await axios.post(`${API_BASE}/detections/upload`, form, {
     headers: {
       ...form.getHeaders(),
       Authorization: `Bearer ${token}`
@@ -48,7 +50,7 @@ async function testPipeline() {
   // Step 3: Rescuer Triage Action (Confirm Victim)
   console.log('\n[*] 3. Testing Rescuer Triage Action on Detection ID:', uploadRes.data.data._id);
   const patchRes = await axios.patch(
-    `http://localhost:5000/api/detections/${uploadRes.data.data._id}/status`,
+    `${API_BASE}/detections/${uploadRes.data.data._id}/status`,
     { status: 'confirmed' },
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -56,7 +58,7 @@ async function testPipeline() {
 
   // Step 4: Verify Alerts Matrix
   console.log('\n[*] 4. Fetching Emergency Alerts Matrix...');
-  const alertsRes = await axios.get('http://localhost:5000/api/alerts?limit=5', {
+  const alertsRes = await axios.get(`${API_BASE}/alerts?limit=5`, {
     headers: { Authorization: `Bearer ${token}` }
   });
   console.log('[+] Alerts Count:', alertsRes.data.count, '| Total Unread:', alertsRes.data.unreadCount);
